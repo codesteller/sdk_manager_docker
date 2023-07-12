@@ -19,6 +19,7 @@ RUN useradd -m $USERNAME && \
         # Replace 1000 with your user/group id
         usermod  --uid ${UID} $USERNAME && \
         groupmod --gid ${GID} $USERNAME
+RUN apt-get update && apt-get upgrade -y && apt-get install --fix-missing -y
 
 # install package
 RUN yes | unminimize && \
