@@ -1,10 +1,14 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # ARGUMENTS
-ARG SDK_MANAGER_VERSION=1.8.0-10363
+#ARG SDK_MANAGER_VERSION=1.8.0-10363
+ARG SDK_MANAGER_VERSION=1.9.3-10904
 ARG SDK_MANAGER_DEB=sdkmanager_${SDK_MANAGER_VERSION}_amd64.deb
 ARG GID=1000
 ARG UID=1000
+
+ENV TZ=Asia/Kolkata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # add new sudo user
 ENV USERNAME jetpack
@@ -47,6 +51,7 @@ RUN yes | unminimize && \
         qemu-user-static \
         binfmt-support \
         libxshmfence1 \
+        locales sudo libdrm2 libgbm-dev \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
