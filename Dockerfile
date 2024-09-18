@@ -1,7 +1,7 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 # ARGUMENTS
-ARG SDK_MANAGER_VERSION=1.8.0-10363
+ARG SDK_MANAGER_VERSION=2.1.0-11698
 ARG SDK_MANAGER_DEB=sdkmanager_${SDK_MANAGER_VERSION}_amd64.deb
 ARG GID=1000
 ARG UID=1000
@@ -41,7 +41,7 @@ RUN yes | unminimize && \
         libxss1 \
         libxtst6 \
         net-tools \
-        python \
+        python3-dev \
         sshpass \
         chromium-browser \
         qemu-user-static \
@@ -52,6 +52,7 @@ RUN yes | unminimize && \
     rm -rf /var/lib/apt/lists/*
 
 # set locale
+RUN apt-get clean && apt-get update && apt-get install -y locales
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
@@ -60,10 +61,11 @@ ENV LC_ALL en_US.UTF-8
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # install SDK Manager
+RUN apt update && apt install sudo -y
 USER jetpack
 COPY --chown=jetpack:jetpack ${SDK_MANAGER_DEB} /home/${USERNAME}/
 WORKDIR /home/${USERNAME}
-RUN sudo apt-get install -f /home/${USERNAME}/${SDK_MANAGER_DEB}
+RUN sudo apt-get install -f /home/${USERNAME}/${SDK_MANAGER_DEB} -y
 RUN rm /home/${USERNAME}/${SDK_MANAGER_DEB}
 
 # configure QEMU to fix https://forums.developer.nvidia.com/t/nvidia-sdk-manager-on-docker-container/76156/18
