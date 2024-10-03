@@ -15,6 +15,8 @@ docker run --privileged --rm -it \
            --volume=/dev:/dev:rw \
            --volume="$JETPACK_HOME/nvidia":/home/jetpack/nvidia:rw \
            --volume="$JETPACK_HOME/Downloads":/home/jetpack/Downloads:rw \
+           --privileged -v /dev/bus/usb:/dev/bus/usb/ \
+           -v /media/$USER:/media/jetpack:slave \
            --shm-size=1gb \
            --env="XAUTHORITY=${XAUTH}" \
            --env="DISPLAY=${DISPLAY}" \
