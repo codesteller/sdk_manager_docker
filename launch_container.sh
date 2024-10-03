@@ -22,4 +22,4 @@ docker run --privileged --rm -it \
            --env=QT_X11_NO_MITSHM=1 \
            --net=host \
            -u "jetpack"  \
-           jetpack_20.04:latest
+           nvdriveos_20.04:latest
